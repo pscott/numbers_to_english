@@ -90,7 +90,7 @@ mod test {
     fn u64_max() {
         let res = number_to_english(std::u64::MAX);
         assert_eq!(
-            res, 
+            res,
             "eighteen quintillion, four hundred forty six quadrillion, seven hundred forty four trillion, seventy three billion, seven hundred nine million, five hundred fifty one thousand, six hundred fifteen"
         )
     }
@@ -99,7 +99,7 @@ mod test {
     fn u32_max() {
         let res = number_to_english(u64::from(std::u32::MAX));
         assert_eq!(
-            res, 
+            res,
             "four billion, two hundred ninety four million, nine hundred sixty seven thousand, two hundred ninety five"
         )
     }

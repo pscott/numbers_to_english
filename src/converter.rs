@@ -1,5 +1,14 @@
 static ZERO_TO_TWENTY: [&str; 20] = [
-    "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    "",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
     "ten",
     "eleven",
     "twelve",
@@ -14,7 +23,15 @@ static ZERO_TO_TWENTY: [&str; 20] = [
 static TENS: [&str; 10] = [
     "", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eigthy", "ninety",
 ];
-static CATEGORIES: [&str; 7] = ["", "thousand", "million", "billion", "trillion", "quadrillion", "quintillion"];
+static CATEGORIES: [&str; 7] = [
+    "",
+    "thousand",
+    "million",
+    "billion",
+    "trillion",
+    "quadrillion",
+    "quintillion",
+];
 
 pub struct Group {
     hundreds: u8,
@@ -44,10 +61,10 @@ impl Group {
 
     fn two_last_digits(&self) -> String {
         match (self.tens, self.units) {
-            (0, _)  =>  ZERO_TO_TWENTY[self.units as usize].to_owned(),
-            (1, _)  =>  ZERO_TO_TWENTY[(self.tens * 10 + self.units) as usize].to_owned(),
-            (_, 0)  =>  TENS[self.tens as usize].to_owned(),
-            (_, _)  =>  format!(
+            (0, _) => ZERO_TO_TWENTY[self.units as usize].to_owned(),
+            (1, _) => ZERO_TO_TWENTY[(self.tens * 10 + self.units) as usize].to_owned(),
+            (_, 0) => TENS[self.tens as usize].to_owned(),
+            (_, _) => format!(
                 "{} {}",
                 TENS[self.tens as usize], ZERO_TO_TWENTY[self.units as usize]
             ),

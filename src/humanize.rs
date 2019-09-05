@@ -1,7 +1,7 @@
 static ZERO_TO_TEN: [&str; 10] = [
     "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
 ];
-static TEN_TO_TWENTY: [&str; 9] = [
+static TEN_TO_TWENTY: [&str; 10] = [
     "ten",
     "eleven",
     "twelve",
@@ -10,12 +10,13 @@ static TEN_TO_TWENTY: [&str; 9] = [
     "fifteen",
     "sixteen",
     "seventeen",
+    "eighteen",
     "nineteen",
 ];
 static TENS: [&str; 10] = [
     "", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eigthy", "ninety",
 ];
-static CATEGORIES: [&str; 4] = ["", "thousand", "million", "billion"];
+static CATEGORIES: [&str; 7] = ["", "thousand", "million", "billion", "trillion", "quadrillion", "quintillion"];
 
 pub struct Cluster {
     hundreds: u8,
@@ -71,7 +72,7 @@ impl Cluster {
     }
 }
 
-pub fn number_to_english(mut num: usize) -> String {
+pub fn number_to_english(mut num: u64) -> String {
     let mut vec: Vec<String> = vec![];
     let mut category = 0;
     while num != 0 {
@@ -195,5 +196,23 @@ mod test {
             res,
             "nine billion nine hundred twelve million eight hundred seventy thousand one"
         );
+    }
+
+    #[test]
+    fn u64_max() {
+        let res = number_to_english(std::u64::MAX);
+        assert_eq!(
+            res, 
+            "eighteen quintillion four hundred forty six quadrillion seven hundred forty four trillion seventy three billion seven hundred nine million five hundred fifty one thousand six hundred fifteen"
+        )
+    }
+
+    #[test]
+    fn u32_max() {
+        let res = number_to_english(u64::from(std::u32::MAX));
+        assert_eq!(
+            res, 
+            "four billion two hundred ninety four million nine hundred sixty seven thousand two hundred ninety five"
+        )
     }
 }

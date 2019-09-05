@@ -1,21 +1,24 @@
 static ZERO_TO_TEN: [&str; 10] = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
 static TEN_TO_TWENTY: [&str; 9] = ["ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "nineteen"];
 static TENS: [&str; 10] = ["", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eigthy", "ninety"];
+static CATEGORIES: [&str; 4] = ["", "thousand", "million", "billion"];
 
 pub struct Cluster {
 	hundreds: u8,
 	tens: u8,
 	units: u8,
+	category: &'static str,
 }
 
 impl Cluster {
-	pub fn new(num: u16) -> Self {
+	pub fn new(num: u16, category: &'static str) -> Self {
 		assert!(num < 1000);
 
 		Cluster {
 			hundreds: (num / 100) as u8,
 			tens: (num / 10 % 10) as u8,
 			units: (num % 10) as u8,
+			category,
 		}
 	}
 
@@ -24,6 +27,7 @@ impl Cluster {
 			0 => String::new(),
 			_ => format!("{} hundred", ZERO_TO_TEN[self.hundreds as usize]),
 		};
+
 		let under_twenty = self.tens * 10 + self.units;
 
 		let last_digits = if self.units == 0 {
@@ -36,21 +40,43 @@ impl Cluster {
 			format!("{} {}", TENS[self.tens as usize], ZERO_TO_TEN[self.units as usize])
 		};
 
-		match (first_digit.is_empty(), last_digits.is_empty()) {
+		let english = match (first_digit.is_empty(), last_digits.is_empty()) {
 			(true, true) => String::new(),
 			(true, false) => last_digits,
 			(false, true) => first_digit,
 			(false, false) => format!("{} {}", first_digit, last_digits)
+		};
+		if self.category.is_empty() || english.is_empty() {
+			format!("{}", english)
+		} else {
+			format!("{} {}", english, self.category)
 		}
 	}
 }
 
-pub fn number_to_english(num: usize) -> String {
-	if num == 0 {
+pub fn number_to_english(mut num: usize) -> String {
+	let mut vec: Vec<Cluster> = vec![];
+	let mut category = 0;
+	while num != 0 {
+		let slice = (num % 1000) as u16;
+		let cluster = Cluster::new(slice, CATEGORIES[category]);
+		vec.push(cluster);
+		category += 1;
+		num /= 1000;
+	}
+	if vec.is_empty() {
 		return String::from("zero")
 	}
-	let cluster = Cluster::new(num as u16);
-	cluster.humanize()
+
+	vec.reverse();
+	let english = vec.iter()
+		.fold(String::new(), |mut acc, item| {
+			let group = &item.humanize();
+			let group = format!("{} ", group);
+			acc.push_str(group.as_ref());
+			acc
+		});
+	english.trim().to_owned()
 }
 
 #[cfg(test)]
@@ -99,8 +125,28 @@ mod test {
 		let res = number_to_english(200);
 		assert_eq!(res, "two hundred");
 	}
-	// #[test]
-	// fn bigger_than_a_thousand() {
-		// let res = number_to_english(1000);
-	// }
+
+	#[test]
+	fn simple_thousand() {
+		let res = number_to_english(2000);
+		assert_eq!(res, "two thousand");
+	}
+
+	#[test]
+	fn thousand_and_hundreds() {
+		let res = number_to_english(7800);
+		assert_eq!(res, "seven thousand eight hundred");
+	}
+
+	#[test]
+	fn simple_million() {
+		let res = number_to_english(4_000_000);
+		assert_eq!(res, "four million");
+	}
+
+	#[test]
+	fn full_million() {
+		let res = number_to_english(1_367_512);
+		assert_eq!(res, "one million three hundred sixty seven thousand five hundred twelve");
+	}
 }

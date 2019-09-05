@@ -5,7 +5,7 @@
 // Ask for new number OR stop executing
 // type ctrl + c to exit ?
 use std::io;
-use numbers_to_english::humanize::number_to_english;
+use numbers_to_english::converter::number_to_english;
 
 fn main() -> io::Result<()> {
 	let mut buffer = String::new();

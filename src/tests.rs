@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod test {
-    use super::*;
+    use crate::converter::number_to_english;
 
     #[test]
     fn ten_to_twenty() {

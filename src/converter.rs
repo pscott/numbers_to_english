@@ -37,7 +37,7 @@ impl Cluster {
         }
     }
 
-    pub fn humanize(&self) -> String {
+    pub fn humanized(&self) -> String {
         let first_digit = match self.hundreds {
             0 => String::new(),
             _ => format!("{} hundred", ZERO_TO_TEN[self.hundreds as usize]),
@@ -58,16 +58,16 @@ impl Cluster {
             )
         };
 
-        let english = match (first_digit.is_empty(), last_digits.is_empty()) {
+        let english_number = match (first_digit.is_empty(), last_digits.is_empty()) {
             (true, true) => String::new(),
             (true, false) => last_digits,
             (false, true) => first_digit,
             (false, false) => format!("{} {}", first_digit, last_digits),
         };
-        if self.category.is_empty() || english.is_empty() {
-            english
+        if self.category.is_empty() || english_number.is_empty() {
+            english_number
         } else {
-            format!("{} {}", english, self.category)
+            format!("{} {}", english_number, self.category)
         }
     }
 }
@@ -78,7 +78,7 @@ pub fn number_to_english(mut num: u64) -> String {
     while num != 0 {
         let slice = (num % 1000) as u16;
         let cluster = Cluster::new(slice, CATEGORIES[category]);
-        vec.push(cluster.humanize());
+        vec.push(cluster.humanized());
         category += 1;
         num /= 1000;
     }

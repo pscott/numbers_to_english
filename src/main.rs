@@ -14,7 +14,7 @@ fn main() -> io::Result<()> {
 	let trimmed = buffer.trim();
 	match trimmed.parse::<u64>() {
 		Ok(num)	=>	println!("{}", number_to_english(num)),
-		Err(..)	=>	eprintln!("Not a valid integer"),
+		Err(..)	=>	eprintln!("Not a valid unsigned integer"),
 	};
 	Ok(())
 }

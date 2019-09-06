@@ -5,6 +5,7 @@
 // Ask for new number OR stop executing
 // type ctrl + c to exit ?
 use numbers_to_english::converter::number_to_english;
+use numbers_to_english::format::Config;
 use std::io;
 
 fn main() -> io::Result<()> {
@@ -12,8 +13,9 @@ fn main() -> io::Result<()> {
     io::stdin().read_line(&mut buffer)?;
 
     let trimmed = buffer.trim();
+	let config = Config::new(",", " ");
     match trimmed.parse::<u64>() {
-        Ok(num) => println!("{}", number_to_english(num)),
+        Ok(num) => println!("{}", number_to_english(num, &config)),
         Err(..) => eprintln!("Not a valid unsigned integer"),
     };
     Ok(())

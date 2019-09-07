@@ -1,20 +1,19 @@
 use numbers_to_english::converter::number_to_english;
 use numbers_to_english::options::Opt;
 use std::env;
-use std::io;
+
 use std::error::Error;
-
+use std::io;
 fn get_number() -> Result<u64, Box<dyn Error>> {
-
-    let mut buffer = String::new();
+	let mut buffer = String::new();
 	println!("Please enter your number:");
 
-    io::stdin().read_line(&mut buffer)?;
+	io::stdin().read_line(&mut buffer)?;
 
-    let trimmed_buffer = buffer.trim();
-    match trimmed_buffer.parse::<u64>() {
-		Ok(num)	=>	Ok(num),
-		Err(_)	=>	Err("Not a valid unsigned integer".into()),
+	let trimmed_buffer = buffer.trim();
+	match trimmed_buffer.parse::<u64>() {
+		Ok(num) => Ok(num),
+		Err(_) => Err("Not a valid unsigned integer".into()),
 	}
 }
 

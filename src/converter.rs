@@ -1,4 +1,4 @@
-use crate::format::Config;
+use crate::options::Opt;
 
 const ZERO_TO_TWENTY: [&str; 20] = [
     "",
@@ -55,10 +55,10 @@ impl Group {
         }
     }
 
-    fn first_digit(&self, config: &Config) -> String {
+    fn first_digit(&self, opt: &Opt) -> String {
         match self.hundreds {
             0 => String::new(),
-            _ => format!("{}{}hundred", ZERO_TO_TWENTY[self.hundreds as usize], config.spacing),
+            _ => format!("{}{}hundred", ZERO_TO_TWENTY[self.hundreds as usize], opt.spacing),
         }
     }
 
@@ -74,32 +74,32 @@ impl Group {
         }
     }
 
-    pub fn humanized(&self, config: &Config) -> String {
-        let first_digit = self.first_digit(config);
+    pub fn humanized(&self, opt: &Opt) -> String {
+        let first_digit = self.first_digit(opt);
         let two_last_digits = self.two_last_digits();
 
         let english_number = match (first_digit.is_empty(), two_last_digits.is_empty()) {
             (true, true) => String::new(),
             (true, false) => two_last_digits,
             (false, true) => first_digit,
-            (false, false) => format!("{}{}{}", first_digit, config.spacing, two_last_digits),
+            (false, false) => format!("{}{}{}", first_digit, opt.spacing, two_last_digits),
         };
 
         if self.category.is_empty() || english_number.is_empty() {
             english_number
         } else {
-            format!("{}{}{}", english_number, config.spacing, self.category)
+            format!("{}{}{}", english_number, opt.spacing, self.category)
         }
     }
 }
 
-pub fn number_to_english(mut num: u64, config: &Config) -> String {
+pub fn number_to_english(mut num: u64, opt: &Opt) -> String {
     let mut vec: Vec<String> = vec![];
     let mut category = 0;
     while num != 0 {
         let slice = (num % 1000) as u16;
         let group = Group::new(slice, CATEGORIES[category]);
-        vec.push(group.humanized(config));
+        vec.push(group.humanized(opt));
         category += 1;
         num /= 1000;
     }
@@ -117,7 +117,7 @@ pub fn number_to_english(mut num: u64, config: &Config) -> String {
     let mut english = String::new();
     while let Some(item) = iter.next() {
         let append = match iter.peek() {
-            Some(_) => format!("{}{}{}", item, config.group_separator, config.spacing),
+            Some(_) => format!("{}{}{}", item, opt.group_separator, opt.spacing),
             None => item.to_owned(),
         };
         english.push_str(append.as_str());

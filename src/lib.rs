@@ -1,6 +1,9 @@
 pub mod constants;
 use crate::constants::{CATEGORIES, TENS, ZERO_TO_TWENTY};
 
+// A Group is a number ranging from 0-999.
+// Numbers are made up of 1+ groups.
+
 pub struct Group {
 	hundreds: u8,
 	tens: u8,
@@ -62,6 +65,9 @@ impl Group {
 	}
 }
 
+
+// Opt structure for options passed in as argv parameters.
+
 pub struct Opt {
 	pub group_separator:	String,
 	pub spacing:			String,
@@ -101,6 +107,8 @@ impl Default for Opt {
 		}
 	}
 }
+
+// Conversion function
 
 pub fn number_to_english(mut num: u64, opt: &Opt) -> String {
 	let mut vec: Vec<String> = vec![];

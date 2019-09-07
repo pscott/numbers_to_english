@@ -21,7 +21,7 @@ pub const ZERO_TO_TWENTY: [&str; 20] = [
 	"nineteen",
 ];
 pub const TENS: [&str; 10] = [
-	"", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eigthy", "ninety",
+	"", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety",
 ];
 pub const CATEGORIES: [&str; 7] = [
 	"",

@@ -20,9 +20,7 @@ pub fn number_to_english(mut num: u64, opt: &Opt) -> String {
 		vec.push(String::from("zero"));
 	}
 
-	vec.reverse();
-
-	let mut iter = vec.iter().peekable();
+	let mut iter = vec.into_iter().rev().peekable();
 	let mut english_num = String::new();
 
 	while let Some(item) = iter.next() {

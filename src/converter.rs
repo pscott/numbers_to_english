@@ -9,7 +9,9 @@ pub fn number_to_english(mut num: u64, opt: &Opt) -> String {
 	while num != 0 {
 		let slice = (num % 1000) as u16;
 		let group = Group::new(slice, CATEGORIES[category]);
-		vec.push(group.to_english(opt));
+		if let Some(english_group) = group.to_english(opt) {
+			vec.push(english_group)
+		}
 		category += 1;
 		num /= 1000;
 	}
@@ -18,10 +20,6 @@ pub fn number_to_english(mut num: u64, opt: &Opt) -> String {
 		vec.push(String::from("zero"));
 	}
 
-	let mut vec: Vec<String> = vec
-		.into_iter()
-		.filter(|word| !word.as_str().trim().is_empty())
-		.collect();
 	vec.reverse();
 
 	let mut iter = vec.iter().peekable();

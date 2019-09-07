@@ -43,21 +43,21 @@ impl Group {
 		}
 	}
 
-	pub fn to_english(&self, opt: &Opt) -> String {
+	pub fn to_english(&self, opt: &Opt) -> Option<String> {
 		let first_digit = self.first_digit(opt);
 		let two_last_digits = self.two_last_digits(opt);
 
 		let english_group = match (first_digit.is_empty(), two_last_digits.is_empty()) {
-			(true, true)	=>	String::new(),
+			(true, true)	=>	return None,
 			(true, false)	=>	two_last_digits,
 			(false, true)	=>	first_digit,
 			(false, false)	=>	format!("{}{}{}", first_digit, opt.spacing, two_last_digits),
 		};
 
-		if self.category.is_empty() || english_group.is_empty() {
-			english_group
+		if self.category.is_empty() {
+			Some(english_group)
 		} else {
-			format!("{}{}{}", english_group, opt.spacing, self.category)
+			Some(format!("{}{}{}", english_group, opt.spacing, self.category))
 		}
 	}
 }

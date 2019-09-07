@@ -29,7 +29,7 @@ pub fn number_to_english(mut num: u64, opt: &Opt) -> String {
 
 	while let Some(item) = iter.next() {
 		let english_group = match iter.peek() {
-			Some(_)	=>	format!("{}{}{}", item, opt.group_separator, opt.spacing),
+			Some(_)	=>	format!("{}{}", item, opt.group_separator),
 			None	=>	item.to_owned(),
 		};
 		english_num.push_str(english_group.as_str());

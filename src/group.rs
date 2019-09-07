@@ -10,7 +10,7 @@ pub struct Group {
 
 impl Group {
 	pub fn new(num: u16, category: &'static str) -> Self {
-		// sanity check to avoid out of bounds indexing
+		// sanity check to prevent out of bounds indexing
 		assert!(num < 1000);
 
 		Group {
@@ -31,21 +31,21 @@ impl Group {
 		}
 	}
 
-	fn two_last_digits(&self) -> String {
+	fn two_last_digits(&self, opt: &Opt) -> String {
 		match (self.tens, self.units) {
 			(0, _) => ZERO_TO_TWENTY[self.units as usize].to_owned(),
 			(1, _) => ZERO_TO_TWENTY[(self.tens * 10 + self.units) as usize].to_owned(),
 			(_, 0) => TENS[self.tens as usize].to_owned(),
 			(_, _) => format!(
-				"{}-{}",
-				TENS[self.tens as usize], ZERO_TO_TWENTY[self.units as usize]
+				"{}{}{}",
+				TENS[self.tens as usize], opt.hyphen, ZERO_TO_TWENTY[self.units as usize]
 			),
 		}
 	}
 
 	pub fn to_english(&self, opt: &Opt) -> String {
 		let first_digit = self.first_digit(opt);
-		let two_last_digits = self.two_last_digits();
+		let two_last_digits = self.two_last_digits(opt);
 
 		let english_group = match (first_digit.is_empty(), two_last_digits.is_empty()) {
 			(true, true)	=>	String::new(),

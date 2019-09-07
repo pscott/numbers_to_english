@@ -23,12 +23,12 @@ pub fn number_to_english(mut num: u64, opt: &Opt) -> String {
 	let mut iter = vec.into_iter().rev().peekable();
 	let mut english_num = String::new();
 
+	let group_separator = opt.group_separator.as_str();
 	while let Some(item) = iter.next() {
-		let english_group = match iter.peek() {
-			Some(_)	=>	format!("{}{}", item, opt.group_separator),
-			None	=>	item.to_owned(),
-		};
-		english_num.push_str(english_group.as_str());
-	}
+		english_num.push_str(item.as_str());
+		if iter.peek().is_some() {
+			english_num.push_str(group_separator);
+		}
+	};
 	english_num
 }

@@ -1,5 +1,4 @@
-use numbers_to_english::converter::number_to_english;
-use numbers_to_english::options::Opt;
+use numbers_to_english::{Opt, number_to_english};
 use std::env;
 use std::error::Error;
 use std::io;

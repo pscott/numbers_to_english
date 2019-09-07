@@ -1,7 +1,5 @@
 #[cfg(test)]
 mod test {
-    use crate::converter::number_to_english;
-    use crate::options::Opt;
 
     #[test]
     fn ten_to_twenty() {

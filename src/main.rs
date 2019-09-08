@@ -17,9 +17,7 @@ fn get_number() -> Result<u64, Box<dyn Error>> {
 
 	io::stdin().read_line(&mut buffer)?;
 
-	let trimmed_buffer = buffer.trim();
-	match trimmed_buffer.parse::<u64>() {
-		Ok(num)	=>	Ok(num),
-		Err(_)	=>	Err("Not a valid unsigned integer".into()),
-	}
+	buffer.trim()
+		.parse::<u64>()
+		.map_err(|err| {err.into()})
 }

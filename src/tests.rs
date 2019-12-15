@@ -1,9 +1,10 @@
 #[cfg(test)]
 mod test {
+    use crate::*;
 
     #[test]
     fn ten_to_twenty() {
-		let opt: Opt = Default::default();
+        let opt: Opt = Default::default();
         let res = number_to_english(12, &opt);
         assert_eq!(res, "twelve");
     }
@@ -78,17 +79,14 @@ mod test {
         assert_eq!(
             res,
             "one million, three hundred sixty-seven thousand, five hundred twelve"
-            );
+        );
     }
 
     #[test]
     fn million_with_units() {
         let opt: Opt = Default::default();
         let res = number_to_english(1_000_002, &opt);
-        assert_eq!(
-            res,
-            "one million, two"
-            );
+        assert_eq!(res, "one million, two");
     }
 
     #[test]
@@ -105,7 +103,7 @@ mod test {
         assert_eq!(
             res,
             "nine billion, nine hundred twelve million, eight hundred seventy thousand, one"
-            );
+        );
     }
 
     #[test]
@@ -130,17 +128,20 @@ mod test {
 
     #[test]
     fn thousand_hyphen() {
-        let opt: Opt = Opt {hyphen: "toto".to_owned(), ..Default::default()};
+        let opt: Opt = Opt {
+            hyphen: "toto".to_owned(),
+            ..Default::default()
+        };
         let res = number_to_english(42_367, &opt);
-        assert_eq!(
-            res,
-            "fortytototwo thousand, three hundred sixtytotoseven"
-            )
+        assert_eq!(res, "fortytototwo thousand, three hundred sixtytotoseven")
     }
 
     #[test]
     fn billion_group_separator() {
-        let opt: Opt = Opt {group_separator: "42".to_owned(), ..Default::default()};
+        let opt: Opt = Opt {
+            group_separator: "42".to_owned(),
+            ..Default::default()
+        };
         let res = number_to_english(345_213_092_012, &opt);
         assert_eq!(
             res,
@@ -150,22 +151,28 @@ mod test {
 
     #[test]
     fn million_spacing() {
-        let opt: Opt = Opt {spacing: ". .".to_owned(), ..Default::default()};
+        let opt: Opt = Opt {
+            spacing: ". .".to_owned(),
+            ..Default::default()
+        };
         let res = number_to_english(14_402_367, &opt);
         assert_eq!(
             res,
             "fourteen. .million, four. .hundred. .two. .thousand, three. .hundred. .sixty-seven"
-            )
+        )
     }
 
     #[test]
     fn mixing_options() {
-        let opt: Opt = Opt {spacing: ". .".to_owned(), hyphen: "!".to_owned(), group_separator: "kk".to_owned()};
+        let opt: Opt = Opt {
+            spacing: ". .".to_owned(),
+            hyphen: "!".to_owned(),
+            group_separator: "kk".to_owned(),
+        };
         let res = number_to_english(98_312_381, &opt);
         assert_eq!(
             res,
             "ninety!eight. .millionkkthree. .hundred. .twelve. .thousandkkthree. .hundred. .eighty!one"
             )
     }
-
 }

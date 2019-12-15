@@ -13,6 +13,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 fn get_number() -> Result<u64, Box<dyn Error>> {
     let mut buffer = String::new();
+    let toto =;
     println!("Please enter your number:");
 
     io::stdin().read_line(&mut buffer)?;
